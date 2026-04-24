@@ -2,20 +2,28 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
-    public Vector3 targetPosition;
+    public Transform target;
     public float moveSpeed = 12f;
+    public Rigidbody rb;
 
     void FixedUpdate()
     {
+        if(target == null)
+        {
+            return;
+        }
+
+        rb.linearVelocity = Vector3.zero;
+
         transform.position = Vector3.Lerp(
             transform.position,
-            targetPosition,
+            target.position,
             Time.fixedDeltaTime * moveSpeed
         );
     }
 
-    public void SetTarget(Vector3 pos)
+    public void SetTarget(Transform target)
     {
-        targetPosition = pos;
+        this.target = target;
     }
 }
