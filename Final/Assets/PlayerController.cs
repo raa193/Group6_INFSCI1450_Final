@@ -10,10 +10,12 @@ public class PlayerController : MonoBehaviour
     public Hand leftHand;
     public Hand rightHand;
 
-    public Transform anchorS;
-    public Transform anchorD;
-    public Transform anchorA;
-    public Transform anchorW;
+    public Transform anchorS, anchorD, anchorA, anchorW;
+    private Transform holdW, holdA, holdS, holdD;
+
+
+    public GameObject labelPrefab;
+    private GameObject labelW, labelA, labelS, labelD;
 
     private int handIndex;
 
@@ -62,15 +64,53 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void SwitchHand()
+   void SwitchHand()
     {
-        activeHand = (activeHand == HandType.Left)
-            ? HandType.Right
-            : HandType.Left;
+        if (activeHand == HandType.Left)
+        {
+            HighlightHand(leftHand.transform, Color.white);
+
+            activeHand = HandType.Right;
+            HighlightHand(rightHand.transform, Color.yellow);
+        }
+        else
+        {
+            HighlightHand(rightHand.transform, Color.white);
+
+            activeHand = HandType.Left;
+            HighlightHand(leftHand.transform, Color.yellow);
+        }
+    }
+
+    void HighlightHand(Transform hand, Color color)
+    {
+        Renderer r = hand.GetComponent<Renderer>();
+
+        if (r != null)
+        {
+            r.material.color = color;
+        }
+    }
+
+    void SetLabel(ref GameObject label, Transform hold, string text)
+    {
+        if (label == null)
+        {
+            label = Instantiate(labelPrefab);
+        }
+
+        label.transform.position = hold.position + Vector3.up * 0.5f;
+
+        var tmp = label.GetComponent<TMPro.TextMeshPro>();
+        tmp.text = text;
     }
 
     void OnTriggerEnter(Collider other)
     {
+        if (IsHoldAlreadyUsed(other.transform)){
+            return;
+        }
+
         if (other.CompareTag("PotentialHold"))
         {
             List<char> openHolds = new List<char>();
@@ -99,18 +139,34 @@ public class PlayerController : MonoBehaviour
             switch (chosenHold)
             {
                 case 'W':
-                    anchorW.position = other.transform.position;
+                    holdW = other.transform;
+                    anchorW.position = holdW.position;
+                    SetLabel(ref labelW, holdW, "W");
                     break;
-                case 'D':
-                    anchorD.position = other.transform.position;
-                    break;
-                case 'S':
-                    anchorS.position = other.transform.position;
-                    break;
+
                 case 'A':
-                    anchorA.position = other.transform.position;
+                    holdA = other.transform;
+                    anchorA.position = holdA.position;
+                    SetLabel(ref labelA, holdA, "A");
+                    break;
+
+                case 'S':
+                    holdS = other.transform;
+                    anchorS.position = holdS.position;
+                    SetLabel(ref labelS, holdS, "S");
+                    break;
+
+                case 'D':
+                    holdD = other.transform;
+                    anchorD.position = holdD.position;
+                    SetLabel(ref labelD, holdD, "D");
                     break;
             }
         }
     }
+
+    bool IsHoldAlreadyUsed(Transform hold)
+    {
+        return hold == holdW || hold == holdA || hold == holdS || hold == holdD;
+    }   
 }
