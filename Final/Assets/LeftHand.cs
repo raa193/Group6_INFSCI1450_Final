@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class LeftHHand : MonoBehaviour
+public class LeftHand : MonoBehaviour
 {
     public Vector3 goalPosition;
 
