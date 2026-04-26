@@ -23,37 +23,43 @@ public class PlayerController : MonoBehaviour
 
         if (kb.sKey.wasPressedThisFrame)
         {
-            UseHand(anchorS);
+            UseRightHand(anchorS);
         }
 
         if (kb.dKey.wasPressedThisFrame)
         {
-            UseHand(anchorD);
+            UseRightHand(anchorD);
         }
 
         if (kb.aKey.wasPressedThisFrame)
         {
-            UseHand(anchorA);
+            UseLeftHand(anchorA);
         }
 
         if (kb.wKey.wasPressedThisFrame)
         {
-            UseHand(anchorW);
+            UseLeftHand(anchorW);
         }
     }
 
-    void UseHand(Transform target)
+    void UseLeftHand(Transform target)
     {
         if (activeHand == HandType.Left)
         {
             leftHand.SetTarget(target);
-        }
-        else
-        {
-            rightHand.SetTarget(target);
+            SwitchHand();
         }
 
-        SwitchHand();
+        
+    }
+
+    void UseRightHand(Transform target)
+    {
+        if (activeHand == HandType.Right)
+        {
+            rightHand.SetTarget(target);
+            SwitchHand();
+        }
     }
 
     void SwitchHand()
