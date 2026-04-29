@@ -6,10 +6,20 @@ public class Hand : MonoBehaviour
     public float moveSpeed = 12f;
     public Rigidbody rb;
 
+    float targetTimer;
+    float holdTime = 5f;
+
     void FixedUpdate()
     {
-        if(target == null)
+        if (target == null)
+            return;
+
+        // countdown timer
+        targetTimer -= Time.fixedDeltaTime;
+
+        if (targetTimer <= 0f)
         {
+            target = null;
             return;
         }
 
@@ -25,5 +35,6 @@ public class Hand : MonoBehaviour
     public void SetTarget(Transform target)
     {
         this.target = target;
+        this.targetTimer = holdTime;
     }
 }

@@ -24,7 +24,7 @@ public class RightHand : MonoBehaviour
     private void Update()
     {
 
-        if (Keyboard.current.sKey.isPressed)
+        if (Keyboard.current.eKey.isPressed)
         {
             goalPosition = anchorS.position;
         }

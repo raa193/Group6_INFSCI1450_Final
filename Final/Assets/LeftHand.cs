@@ -23,7 +23,7 @@ public class LeftHand : MonoBehaviour
     private void Update()
     {
 
-        if (Keyboard.current.wKey.isPressed)
+        if (Keyboard.current.qKey.isPressed)
         {
             goalPosition = anchorW.position;
         }
