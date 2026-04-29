@@ -23,16 +23,6 @@ public class PlayerController : MonoBehaviour
     {
         Keyboard kb = Keyboard.current;
 
-        if (kb.eKey.wasPressedThisFrame)
-        {
-            UseHand(rightHand, anchorE);
-        }
-
-        if (kb.dKey.wasPressedThisFrame)
-        {
-            UseHand(rightHand, anchorD);
-        }
-
         if (kb.qKey.wasPressedThisFrame)
         {
             UseHand(leftHand, anchorQ);
@@ -41,6 +31,16 @@ public class PlayerController : MonoBehaviour
         if (kb.aKey.wasPressedThisFrame)
         {
             UseHand(leftHand, anchorA);
+        }
+
+        if (kb.eKey.wasPressedThisFrame)
+        {
+            UseHand(rightHand, anchorE);
+        }
+
+        if (kb.dKey.wasPressedThisFrame)
+        {
+            UseHand(rightHand, anchorD);
         }
     }
 
