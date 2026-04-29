@@ -4,18 +4,18 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
-    public enum HandType { Left, Right }
-    public HandType activeHand = HandType.Left;
 
     public Hand leftHand;
     public Hand rightHand;
 
-    public Transform anchorS, anchorD, anchorA, anchorW;
-    private Transform holdW, holdA, holdS, holdD;
+    public Hand activeHand;
+
+    public Transform anchorQ, anchorA, anchorE, anchorD;
+    private Transform holdQ, holdA, holdE, holdD;
 
 
     public GameObject labelPrefab;
-    private GameObject labelW, labelA, labelS, labelD;
+    private GameObject labelQ, labelA, labelE, labelD;
 
     private int handIndex;
 
@@ -23,61 +23,52 @@ public class PlayerController : MonoBehaviour
     {
         Keyboard kb = Keyboard.current;
 
-        if (kb.sKey.wasPressedThisFrame)
+        if (kb.eKey.wasPressedThisFrame)
         {
-            UseRightHand(anchorS);
+            UseHand(rightHand, anchorE);
         }
 
         if (kb.dKey.wasPressedThisFrame)
         {
-            UseRightHand(anchorD);
+            UseHand(rightHand, anchorD);
+        }
+
+        if (kb.qKey.wasPressedThisFrame)
+        {
+            UseHand(leftHand, anchorQ);
         }
 
         if (kb.aKey.wasPressedThisFrame)
         {
-            UseLeftHand(anchorA);
-        }
-
-        if (kb.wKey.wasPressedThisFrame)
-        {
-            UseLeftHand(anchorW);
+            UseHand(leftHand, anchorA);
         }
     }
 
-    void UseLeftHand(Transform target)
+    void UseHand(Hand hand, Transform target)
     {
-        if (activeHand == HandType.Left)
+        if (activeHand == hand)
         {
-            leftHand.SetTarget(target);
+            hand.SetTarget(target);
             SwitchHand();
         }
 
         
     }
 
-    void UseRightHand(Transform target)
-    {
-        if (activeHand == HandType.Right)
-        {
-            rightHand.SetTarget(target);
-            SwitchHand();
-        }
-    }
-
    void SwitchHand()
     {
-        if (activeHand == HandType.Left)
+        if (activeHand == leftHand)
         {
             HighlightHand(leftHand.transform, Color.white);
 
-            activeHand = HandType.Right;
+            activeHand = rightHand;
             HighlightHand(rightHand.transform, Color.yellow);
         }
         else
         {
             HighlightHand(rightHand.transform, Color.white);
 
-            activeHand = HandType.Left;
+            activeHand = leftHand;
             HighlightHand(leftHand.transform, Color.yellow);
         }
     }
@@ -114,21 +105,21 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("PotentialHold"))
         {
             List<char> openHolds = new List<char>();
-            if(!Keyboard.current.sKey.isPressed)
+            if(!Keyboard.current.qKey.isPressed)
             {
-                openHolds.Add('S');
+                openHolds.Add('Q');
             }
             if (!Keyboard.current.aKey.isPressed)
             {
                 openHolds.Add('A');
             }
+            if (!Keyboard.current.eKey.isPressed)
+            {
+                openHolds.Add('E');
+            }
             if (!Keyboard.current.dKey.isPressed)
             {
                 openHolds.Add('D');
-            }
-            if (!Keyboard.current.wKey.isPressed)
-            {
-                openHolds.Add('W');
             }
             if (openHolds.Count == 0)
             {
@@ -138,10 +129,10 @@ public class PlayerController : MonoBehaviour
             handIndex = (handIndex + 1) % 4;
             switch (chosenHold)
             {
-                case 'W':
-                    holdW = other.transform;
-                    anchorW.position = holdW.position;
-                    SetLabel(ref labelW, holdW, "W");
+                case 'Q':
+                    holdQ = other.transform;
+                    anchorQ.position = holdQ.position;
+                    SetLabel(ref labelQ, holdQ, "Q");
                     break;
 
                 case 'A':
@@ -150,10 +141,10 @@ public class PlayerController : MonoBehaviour
                     SetLabel(ref labelA, holdA, "A");
                     break;
 
-                case 'S':
-                    holdS = other.transform;
-                    anchorS.position = holdS.position;
-                    SetLabel(ref labelS, holdS, "S");
+                case 'E':
+                    holdE = other.transform;
+                    anchorE.position = holdE.position;
+                    SetLabel(ref labelE, holdE, "E");
                     break;
 
                 case 'D':
@@ -167,6 +158,6 @@ public class PlayerController : MonoBehaviour
 
     bool IsHoldAlreadyUsed(Transform hold)
     {
-        return hold == holdW || hold == holdA || hold == holdS || hold == holdD;
+        return hold == holdQ || hold == holdA || hold == holdE || hold == holdD;
     }   
 }
