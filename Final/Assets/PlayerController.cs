@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -90,10 +91,13 @@ public class PlayerController : MonoBehaviour
             label = Instantiate(labelPrefab);
         }
 
-        label.transform.position = hold.position + Vector3.up * 0.5f;
+        label.transform.position = hold.position - Vector3.forward;
 
         var tmp = label.GetComponent<TMPro.TextMeshPro>();
         tmp.text = text;
+        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.fontSize = 100;
+        tmp.color = Color.white;
     }
 
     void OnTriggerEnter(Collider other)
